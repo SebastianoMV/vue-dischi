@@ -1,7 +1,7 @@
 <template>
 <main >
   <div class="container p-5" v-if="loaded">
-    <div class="row row-cols-5">
+    <div class="row row-cols-xxl-5 row-cols-md-3 row-cols-sm-2 row-cols-1">
       <CardComp v-for="(card, index) in musicCards.response" :key="index" :card='card'/>
     </div>
     
