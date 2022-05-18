@@ -4,7 +4,7 @@
     <img src="https://www.geekslab.it/wp-content/uploads/2019/03/logo-spotify.png" alt="">
     <div class="d-flex div-selects align-items-center">
     <InputComp @filterGenre="recivedValue" :arrGenre="genreList"/>
-    <SelectArtists  :arrArtists="artistsList"/>
+    <SelectArtists @filterGenre="recivedValueAuthor" :arrArtists="artistsList"/>
     </div>
   </nav>
   <div class="container p-5" v-if="loaded">
@@ -56,11 +56,10 @@ export default {
           this.loaded=true;
           this.createGenreList();
           console.log(this.genreList);
-          this.createArtistsList()
+          this.createArtistsList();
         })
      },
      recivedValue(selectValue){
-       
        this.stringToGenre = selectValue;
        console.log(this.stringToGenre);
      },
@@ -76,12 +75,10 @@ export default {
          if(!this.artistsList.includes(card.author)){
            this.artistsList.push(card.author)
          }
-        
        })
 
      },
      recivedValueAuthor(selectValueAuthor){
-       
        this.stingToAuthor = selectValueAuthor;
        console.log(this.stingToAuthor);
      },
@@ -89,11 +86,15 @@ export default {
     computed:{
       filtGenreArr(){
         let genreArr = [];
-        if(this.stringToGenre.length == 0){
+        if(this.stringToGenre.length == 0 && this.stingToAuthor.length == 0){
           genreArr = this.musicCards;
+        }else if(this.stringToGenre == 'Tutti i generi' && this.stingToAuthor == 'Tutti gli artisti'){
+           genreArr = this.musicCards;
         }
         else if(this.stringToGenre == 'Tutti i generi'){
-          genreArr = this.musicCards;
+          genreArr = this.musicCards.filter(cardgenre=> {
+            return cardgenre.author.toLowerCase().includes(this.stingToAuthor.toLowerCase())
+          })
         }else{
           genreArr = this.musicCards.filter(cardgenre=> {
             return cardgenre.genre.toLowerCase().includes(this.stringToGenre.toLowerCase())
@@ -101,20 +102,6 @@ export default {
         }
         return genreArr;
       },
-      filtAuthorArr(){
-        let authorArr = [];
-        if(this.stingToAuthor.length == 0){
-          authorArr = this.musicCards;
-        }
-        else if(this.stingToAuthor == 'Tutti i generi'){
-          authorArr = this.musicCards;
-        }else{
-          authorArr = this.musicCards.filter(cardauthor=> {
-            return cardauthor.author.toLowerCase().includes(this.stingToAuthor.toLowerCase())
-          })
-        }
-        return genreArr;
-      }
     },
 }
 </script>
