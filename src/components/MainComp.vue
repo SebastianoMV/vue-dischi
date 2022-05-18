@@ -2,8 +2,10 @@
 <main >
   <nav class="d-flex justify-content-between">
     <img src="https://www.geekslab.it/wp-content/uploads/2019/03/logo-spotify.png" alt="">
+    <div class="d-flex div-selects align-items-center">
     <InputComp @filterGenre="recivedValue" :arrGenre="genreList"/>
-
+    <SelectArtists  :arrArtists="artistsList"/>
+    </div>
   </nav>
   <div class="container p-5" v-if="loaded">
     <div class="row row-cols-xxl-5 row-cols-md-3 row-cols-sm-2 row-cols-1">
@@ -23,10 +25,11 @@
 import CardComp from './CardComp.vue';
 import axios from 'axios';
 import InputComp from './InputComp.vue';
+import SelectArtists from './SelectArtists.vue';
 
 export default {
     name: "MainComp",
-    components: { CardComp, InputComp },
+    components: { CardComp, InputComp, SelectArtists },
 
     data(){
       return{
@@ -35,7 +38,8 @@ export default {
        musicCards:[],
        stringToGenre:'',
        genreList:[],
-       artistsList:'',
+       artistsList:[],
+       stingToAuthor:'',
       }
     },
     mounted() {
@@ -52,6 +56,7 @@ export default {
           this.loaded=true;
           this.createGenreList();
           console.log(this.genreList);
+          this.createArtistsList()
         })
      },
      recivedValue(selectValue){
@@ -64,10 +69,22 @@ export default {
          if(!this.genreList.includes(card.genre)){
            this.genreList.push(card.genre)
          }
+       })
+     },
+     createArtistsList(){
+       this.musicCards.forEach((card)=>{
+         if(!this.artistsList.includes(card.author)){
+           this.artistsList.push(card.author)
+         }
         
        })
 
-     }
+     },
+     recivedValueAuthor(selectValueAuthor){
+       
+       this.stingToAuthor = selectValueAuthor;
+       console.log(this.stingToAuthor);
+     },
     },
     computed:{
       filtGenreArr(){
@@ -80,6 +97,20 @@ export default {
         }else{
           genreArr = this.musicCards.filter(cardgenre=> {
             return cardgenre.genre.toLowerCase().includes(this.stringToGenre.toLowerCase())
+          })
+        }
+        return genreArr;
+      },
+      filtAuthorArr(){
+        let authorArr = [];
+        if(this.stingToAuthor.length == 0){
+          authorArr = this.musicCards;
+        }
+        else if(this.stingToAuthor == 'Tutti i generi'){
+          authorArr = this.musicCards;
+        }else{
+          authorArr = this.musicCards.filter(cardauthor=> {
+            return cardauthor.author.toLowerCase().includes(this.stingToAuthor.toLowerCase())
           })
         }
         return genreArr;
@@ -96,6 +127,9 @@ main{
   background-color: #1e2d3b;
   .d-flex{
     height: 100vh;
+  }
+  .div-selects{
+    max-height: 30px;
   }
   nav{
   max-height: 50px;
