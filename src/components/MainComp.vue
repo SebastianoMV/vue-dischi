@@ -2,16 +2,12 @@
 <main >
   <nav class="d-flex justify-content-between">
     <img src="https://www.geekslab.it/wp-content/uploads/2019/03/logo-spotify.png" alt="">
-    <select name="genere" id="genere" multiple>
-      <option value=""></option>
-      <option value=""></option>
-      <option value=""></option>
-    </select>
+    <InputComp @filterGenre="recivedValue" />
 
   </nav>
   <div class="container p-5" v-if="loaded">
     <div class="row row-cols-xxl-5 row-cols-md-3 row-cols-sm-2 row-cols-1">
-      <CardComp v-for="(card, index) in musicCards.response" :key="index" :card='card'/>
+      <CardComp v-for="(card, index) in filtGenreArr" :key="index" :card='card'/>
     </div>
     
   </div>
@@ -26,16 +22,18 @@
 <script>
 import CardComp from './CardComp.vue';
 import axios from 'axios';
+import InputComp from './InputComp.vue';
 
 export default {
     name: "MainComp",
-    components: { CardComp },
+    components: { CardComp, InputComp },
 
     data(){
       return{
        loaded: false,
        apiUrl:'https://flynn.boolean.careers/exercises/api/array/music',
-       musicCards:[]
+       musicCards:[],
+       stringToGenre:'',
       }
     },
     mounted() {
@@ -46,12 +44,33 @@ export default {
         axios.get(this.apiUrl)
         .then(response => {
           console.log(response.data);
-          this.musicCards = response.data;
+          this.musicCards = response.data.response;
           console.log(this.musicCards);
           this.loaded=true;
         })
+     },
+     recivedValue(selectValue){
+       
+       this.stringToGenre = selectValue;
+       console.log(this.stringToGenre);
      }
     },
+    computed:{
+      filtGenreArr(){
+        let genreArr = [];
+        if(this.stringToGenre.length == 0){
+          genreArr = this.musicCards;
+        }
+        else if(this.stringToGenre == 'Tutti i generi'){
+          genreArr = this.musicCards;
+        }else{
+          genreArr = this.musicCards.filter(cardgenre=> {
+            return cardgenre.genre.toLowerCase().includes(this.stringToGenre.toLowerCase())
+          })
+        }
+        return genreArr;
+      }
+    }
 }
 </script>
 
@@ -59,10 +78,10 @@ export default {
 @import '../assets/style/var';
 
 main{
-  min-height: calc(100vh - 50px);
+  min-height: 100vh;
   background-color: #1e2d3b;
   .d-flex{
-    height: calc(100vh - 50px);
+    height: 100vh;
   }
   nav{
   max-height: 50px;
