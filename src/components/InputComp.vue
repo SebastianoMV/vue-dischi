@@ -1,10 +1,8 @@
 <template>
   <select v-model="selected" class="form-select" aria-label="Default select example" @change="$emit('filterGenre', selected)">
-    <option>Tutti i generi</option>
-    <option>Rock</option>
-    <option>Jazz</option>
-    <option>Pop</option>
-    <option>Metal</option>
+    <option selected>Tutti i generi</option>
+    <option  v-for="(genre,index) in arrGenre" :key="index">{{genre}}</option>
+    
 </select>
 </template>
 
@@ -16,6 +14,9 @@ export default {
       selected:'Tutti i generi'
     }
   },
+  props:{
+    arrGenre : Array
+  }
 };
 </script>
 

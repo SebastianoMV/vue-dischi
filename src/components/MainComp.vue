@@ -2,7 +2,7 @@
 <main >
   <nav class="d-flex justify-content-between">
     <img src="https://www.geekslab.it/wp-content/uploads/2019/03/logo-spotify.png" alt="">
-    <InputComp @filterGenre="recivedValue" />
+    <InputComp @filterGenre="recivedValue" :arrGenre="genreList"/>
 
   </nav>
   <div class="container p-5" v-if="loaded">
@@ -34,10 +34,13 @@ export default {
        apiUrl:'https://flynn.boolean.careers/exercises/api/array/music',
        musicCards:[],
        stringToGenre:'',
+       genreList:[],
+       artistsList:'',
       }
     },
     mounted() {
       this.getApi();
+      
     },
     methods: {
       getApi(){
@@ -47,12 +50,23 @@ export default {
           this.musicCards = response.data.response;
           console.log(this.musicCards);
           this.loaded=true;
+          this.createGenreList();
+          console.log(this.genreList);
         })
      },
      recivedValue(selectValue){
        
        this.stringToGenre = selectValue;
        console.log(this.stringToGenre);
+     },
+     createGenreList(){
+       this.musicCards.forEach((card)=>{
+         if(!this.genreList.includes(card.genre)){
+           this.genreList.push(card.genre)
+         }
+        
+       })
+
      }
     },
     computed:{
@@ -70,7 +84,7 @@ export default {
         }
         return genreArr;
       }
-    }
+    },
 }
 </script>
 
