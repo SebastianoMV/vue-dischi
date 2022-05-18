@@ -28,7 +28,7 @@ export default {
 @import '../assets/style/var';
 .smv-card{
   width: 100%;
-  height: 400px;
+  min-height: 400px;
   background-color: $primary-color;
   img{
     width: 90%;
