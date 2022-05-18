@@ -1,5 +1,14 @@
 <template>
 <main >
+  <nav class="d-flex justify-content-between">
+    <img src="https://www.geekslab.it/wp-content/uploads/2019/03/logo-spotify.png" alt="">
+    <select name="genere" id="genere" multiple>
+      <option value=""></option>
+      <option value=""></option>
+      <option value=""></option>
+    </select>
+
+  </nav>
   <div class="container p-5" v-if="loaded">
     <div class="row row-cols-xxl-5 row-cols-md-3 row-cols-sm-2 row-cols-1">
       <CardComp v-for="(card, index) in musicCards.response" :key="index" :card='card'/>
@@ -47,12 +56,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/style/var';
+
 main{
   min-height: calc(100vh - 50px);
   background-color: #1e2d3b;
   .d-flex{
     height: calc(100vh - 50px);
   }
+  nav{
+  max-height: 50px;
+  padding: 10px;
+  background-color: $primary-color;
+  i{
+    color: green;
+  }
+}
 }
 .lds-ripple {
   display: inline-block;
