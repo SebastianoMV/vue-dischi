@@ -88,20 +88,30 @@ export default {
     computed:{
       filtGenreArr(){
         let genreArr = [];
-        if(this.stringToGenre.length == 0 && this.stingToAuthor.length == 0){
-          genreArr = this.musicCards;
-        }else if(this.stringToGenre == 'Tutti i generi' && this.stingToAuthor == 'Tutti gli artisti'){
-           genreArr = this.musicCards;
-        }
-        else if(this.stringToGenre.length == 0 || this.stringToGenre =='Tutti i generi'){
-          genreArr = this.musicCards.filter(cardgenre=> {
-            return cardgenre.author.toLowerCase().includes(this.stingToAuthor.toLowerCase())
-          })
+        let filtredArr=[];
+        if(this.stringToGenre != ''){
+          genreArr= this.musicCards.filter(card => card.genre ==this.stringToGenre);
         }else{
-          genreArr = this.musicCards.filter(cardgenre=> {
-            return cardgenre.genre.toLowerCase().includes(this.stringToGenre.toLowerCase())
-          })
+          genreArr = this.musicCards;
         }
+
+        if(this.stingToAuthor != ''){
+          filtredArr = genreArr.filter( card => card.author == this.stingToAuthor)
+          genreArr = filtredArr;
+        }
+        // if(this.stringToGenre == '' && this.stingToAuthor == ''){
+        //   genreArr = this.musicCards;
+
+        // }else if(this.stringToGenre == ''){
+        //   genreArr = this.musicCards.filter(cardgenre=> {
+        //     return cardgenre.author.toLowerCase().includes(this.stingToAuthor.toLowerCase())
+        //   })
+          
+        // }else{
+        //   genreArr = this.musicCards.filter(cardgenre=> {
+        //     return cardgenre.genre.toLowerCase().includes(this.stringToGenre.toLowerCase())
+        //   })
+        // }
         return genreArr;
       },
     },

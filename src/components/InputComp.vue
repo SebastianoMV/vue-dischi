@@ -1,6 +1,6 @@
 <template>
   <select v-model="selected" class="form-select m-2" aria-label="Default select example" @change="$emit('filterGenre', selected)">
-    <option selected>Tutti i generi</option>
+    <option value="">Tutti i generi</option>
     <option  v-for="(genre,index) in arrGenre" :key="index">{{genre}}</option>
     
 </select>
@@ -11,7 +11,7 @@ export default {
   name :'InputComp',
   data() {
     return {
-      selected:'Tutti i generi'
+      selected:''
     }
   },
   props:{
