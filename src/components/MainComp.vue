@@ -54,6 +54,8 @@ export default {
           this.musicCards = response.data.response;
           console.log(this.musicCards);
           this.loaded=true;
+
+          // Chiamate per generare le list dei select
           this.createGenreList();
           console.log(this.genreList);
           this.createArtistsList();
@@ -91,7 +93,7 @@ export default {
         }else if(this.stringToGenre == 'Tutti i generi' && this.stingToAuthor == 'Tutti gli artisti'){
            genreArr = this.musicCards;
         }
-        else if(this.stringToGenre == 'Tutti i generi'){
+        else if(this.stringToGenre.length == 0 || this.stringToGenre =='Tutti i generi'){
           genreArr = this.musicCards.filter(cardgenre=> {
             return cardgenre.author.toLowerCase().includes(this.stingToAuthor.toLowerCase())
           })
@@ -122,9 +124,6 @@ main{
   max-height: 50px;
   padding: 10px;
   background-color: $primary-color;
-  i{
-    color: green;
-  }
 }
 }
 .lds-ripple {
